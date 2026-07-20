@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ISO 27002: Aplicación y Estrategia Corporativa</title>
+    
+    <!-- Reveal.js Core & Theme -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reset.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/night.min.css">
+    
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+    <style>
+        :root {
+            /* Colores de Acento Neón */
+            --neon-1: #00f2fe; /* Cian */
+            --neon-2: #00e676; /* Verde Brillante */
+            --neon-3: #d500f9; /* Magenta */
+            --neon-4: #ff9100; /* Naranja Neón */
+            --neon-5: #ff1744; /* Rojo Carmesí */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #050b14; /* Color base oscuro */
+        }
+
+        /* Contenedor del fondo de partículas interactivo */
+        #particles-js {
+            position: fixed;
+            width: 100vw;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 0;
+            background-color: #0A192F; /* Color inicial (Parte 1) */
+            transition: background-color 1.5s ease-in-out;
+        }
+
+        /* El contenedor de las diapositivas va por encima */
+        .reveal {
+            z-index: 10;
+        }
+        
+        /* Ocultar el fondo predeterminado de Reveal para que se vean las partículas */
+        .reveal .backgrounds {
+            display: none; 
+        }
+
+        /* Tipografía Premium */
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 {
+            font-family: 'Inter', sans-serif;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1px !important;
+            margin-bottom: 20px !important;
+        }
+        .reveal h1 { font-size: 40px !important; }
+        .reveal h2 { font-size: 28px !important; margin-bottom: 15px !important; }
+        .reveal h3 { font-size: 20px !important; margin-bottom: 10px !important; }
+        .glass-panel p:not(.info-card p) { font-size: 16px !important; line-height: 1.5 !important; margin-bottom: 15px !important; }
+
+        /* ======== COMPONENTES COMPLEJOS ======== */
+
+        /* Panel Glassmorphism Principal (Efecto Cristal) */
+        .glass-panel {
+            background: rgba(20, 20, 30, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            padding: 30px 40px; /* Reducido para ahorrar espacio vertical */
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1);
+            position: relative;
+            transform-style: preserve-3d;
+            width: 100%;
+            box-sizing: border-box;
+            max-height: 80vh; /* Nunca será más grande que la altura de la ventana */
+            overflow-y: auto; /* Crea scroll interno si la pantalla es muy pequeña */
+        }
+        
+        /* Scrollbar personalizado para el panel interior */
+        .glass-panel::-webkit-scrollbar { width: 6px; }
+        .glass-panel::-webkit-scrollbar-track { background: transparent; border-radius: 10px; }
+        .glass-panel::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        .glass-panel::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.4); }
+
+        /* Sistema de Grillas Avanzado */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .grid-4 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; } /* 2x2 para tarjetas pequeñas */
+
+        @media (max-width: 900px) {
+            .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+        }
+
+        /* Tarjetas de Información 3D Interactiva */
+        .info-card {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 16px;
+            padding: 20px 22px;
+            text-align: left;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border-top: 4px solid transparent;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            position: relative;
+            overflow-y: auto;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100%;
+            box-sizing: border-box;
+        }
+        
+        /* Scrollbar interno para las tarjetas si rebalsan */
+        .info-card::-webkit-scrollbar { width: 4px; }
+        .info-card::-webkit-scrollbar-track { background: transparent; }
+        .info-card::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+        
+        .info-card:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+            background: rgba(15, 15, 20, 0.8);
+            z-index: 5;
+        }
+
+        /* Efecto de resplandor en hover para tarjetas */
+        .info-card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.05), transparent);
+            transform: skewX(-20deg);
+            transition: 0.7s;
+        }
+        .info-card:hover::before { left: 150%; }
+
+        .info-card i {
+            font-size: 32px !important;
+            margin-bottom: 10px !important;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        .info-card:hover i {
+            transform: scale(1.2) rotate(5deg);
+        }
+
+        .info-card h4 {
+            font-size: 18px !important;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin-bottom: 8px !important;
+        }
+        
+        .info-card p, .info-card li {
+            font-size: 14px !important;
+            line-height: 1.4 !important;
+            margin: 0;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        .img-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        .img-container img {
+            max-width: 100%;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            max-height: 350px;
+            object-fit: contain;
+        }
+
+        .info-card p, .info-card li {
+            font-size: 0.85em;
+            color: #b0bec5;
+            line-height: 1.4;
+            margin: 0;
+        }
+
+        .info-card ul {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        /* Etiquetas tipo "Píldora" */
+        .badge {
+            display: inline-block;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.8em;
+            font-weight: 600;
+            letter-spacing: 1px;
+            background: rgba(255,255,255,0.1);
+            margin-bottom: 25px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* ==================== TEMATIZACIÓN DINÁMICA ==================== */
+        
+        /* TEMA 1: INTRODUCCIÓN (AZUL) */
+        .theme-1 h1, .theme-1 h2, .theme-1 h3, .theme-1 .highlight { color: var(--neon-1); text-shadow: 0 0 20px rgba(0, 242, 254, 0.4); }
+        .theme-1 .info-card { border-top-color: var(--neon-1); }
+        .theme-1 i { color: var(--neon-1); }
+        .theme-1 .badge { color: var(--neon-1); border-color: var(--neon-1); }
+
+        /* TEMA 2: CAP 1 y 2 (VERDE) */
+        .theme-2 h1, .theme-2 h2, .theme-2 h3, .theme-2 .highlight { color: var(--neon-2); text-shadow: 0 0 20px rgba(0, 230, 118, 0.4); }
+        .theme-2 .info-card { border-top-color: var(--neon-2); }
+        .theme-2 i { color: var(--neon-2); }
+        .theme-2 .badge { color: var(--neon-2); border-color: var(--neon-2); }
+
+        /* TEMA 3: CAP 3 y 4 (PÚRPURA) */
+        .theme-3 h1, .theme-3 h2, .theme-3 h3, .theme-3 .highlight { color: var(--neon-3); text-shadow: 0 0 20px rgba(213, 0, 249, 0.4); }
+        .theme-3 .info-card { border-top-color: var(--neon-3); }
+        .theme-3 i { color: var(--neon-3); }
+        .theme-3 .badge { color: var(--neon-3); border-color: var(--neon-3); }
+
+        /* TEMA 4: CAP 5 y 6 (NARANJA) */
+        .theme-4 h1, .theme-4 h2, .theme-4 h3, .theme-4 .highlight { color: var(--neon-4); text-shadow: 0 0 20px rgba(255, 145, 0, 0.4); }
+        .theme-4 .info-card { border-top-color: var(--neon-4); }
+        .theme-4 i { color: var(--neon-4); }
+        .theme-4 .badge { color: var(--neon-4); border-color: var(--neon-4); }
+
+        /* TEMA 5: CONCLUSIONES (ROJO) */
+        .theme-5 h1, .theme-5 h2, .theme-5 h3, .theme-5 .highlight { color: var(--neon-5); text-shadow: 0 0 20px rgba(255, 23, 68, 0.4); }
+        .theme-5 .info-card { border-top-color: var(--neon-5); }
+        .theme-5 i { color: var(--neon-5); }
+        .theme-5 .badge { color: var(--neon-5); border-color: var(--neon-5); }
+
+        /* Barra de progreso Reveal.js personalizada */
+        .reveal .progress { height: 5px; background: rgba(255,255,255,0.05); }
+        .reveal .progress span { background: linear-gradient(90deg, var(--neon-1), var(--neon-2), var(--neon-3), var(--neon-4), var(--neon-5)); }
+        
+        /* Ocultar scrollbars */
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Capa de Fondo Interactivo (Partículas) -->
+    <div id="particles-js"></div>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ==========================================
+                 PARTE 1: PRELIMINARES E INTRODUCCIÓN
+                 (Se detectará por la clase theme-1)
+            =========================================== -->
+            <section class="theme-container theme-1">
+                
+                <!-- DIAPOSITIVA 1: PORTADA -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel" data-tilt data-tilt-max="5" data-tilt-speed="400" data-tilt-glare="true" data-tilt-max-glare="0.2" style="padding-top: 15px; padding-bottom: 15px;">
+                        
+                        <div style="font-size: 0.65em; text-transform: uppercase; letter-spacing: 2px; color: #ccc; margin-bottom: 15px; font-weight: 600;" class="animate__animated animate__fadeInDown">
+                            Universidad Nacional José Faustino Sánchez Carrión<br>
+                            <span style="font-size: 0.85em; color: var(--neon-1);">Facultad de Ingeniería Industrial, Sistemas e Informática</span><br>
+                            <span style="font-size: 0.85em; color: #aaa;">Ingeniería de Sistemas</span>
+                        </div>
+
+                        <h1 style="font-size: 2.2em !important; margin-bottom: 5px !important;" class="animate__animated animate__zoomIn">ISO <span class="highlight">27002</span></h1>
+                        <h2 class="animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 1.1em !important; text-transform: uppercase; color: #fff; letter-spacing: 1px; margin-bottom: 5px !important;">
+                            Aplicación y Estrategia Corporativa
+                        </h2>
+                        <h3 class="animate__animated animate__fadeInUp animate__delay-1s" style="font-size: 0.85em; color: var(--neon-1); letter-spacing: 3px; margin-bottom: 20px;">
+                            Information Technology Audit - Equipo 4
+                        </h3>
+                        
+                        <div class="grid-2 animate__animated animate__fadeInUp animate__delay-2s" style="margin-top: 10px; text-align: left; gap: 15px;">
+                            <div class="info-card" style="padding: 15px 20px;">
+                                <i class="fa-solid fa-users" style="font-size: 20px !important; margin-bottom: 5px !important; color: var(--neon-1);"></i>
+                                <h4 style="font-size: 14px !important; margin-bottom: 5px !important;">Alumnos:</h4>
+                                <ul style="list-style: none; padding: 0; margin: 0; line-height: 1.5; font-size: 12px !important; color: #ddd;">
+                                    <li>• Adrian Francisco Viza Trujillo</li>
+                                    <li>• Nilton Sigueñas Pineda</li>
+                                    <li>• Jean Paul Izquierdo Sanchez</li>
+                                    <li>• Michael Bravo Granados</li>
+                                    <li>• Alexis Yauyo Mateo</li>
+                                </ul>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="info-card" style="padding: 15px 20px;">
+                                    <i class="fa-solid fa-chalkboard-user" style="font-size: 20px !important; margin-bottom: 5px !important; color: var(--neon-2);"></i>
+                                    <h4 style="font-size: 14px !important; margin-bottom: 5px !important;">Docente:</h4>
+                                    <p style="margin: 0; font-size: 13px !important; color: #ddd;">Costilla Retuerto Fernando</p>
+                                </div>
+                                <div class="info-card" style="padding: 15px 20px; display: flex; align-items: center; justify-content: center; text-align: center; flex-direction: column;">
+                                    <i class="fa-solid fa-location-dot" style="font-size: 20px !important; margin-bottom: 5px !important; color: var(--neon-5);"></i>
+                                    <p style="margin: 0; font-size: 13px !important; color: #ddd; letter-spacing: 1px;">Huacho, 16/05/2026</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 2: RESUMEN EJECUTIVO -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 15px;">1. El Catálogo Global de Seguridad</h2>
+                        <div class="grid-2" style="align-items: center;">
+                            <div>
+                                <div class="info-card fragment fade-up" style="margin-bottom: 15px;">
+                                    <i class="fa-solid fa-book-open-reader"></i>
+                                    <h4>Fundamento y Función</h4>
+                                    <ul>
+                                        <li>Catálogo más reconocido a nivel mundial.</li>
+                                        <li>Guía de implementación complementaria (ISO 27001).</li>
+                                        <li>Puente entre estrategia y ejecución técnica.</li>
+                                    </ul>
+                                </div>
+                                <div class="info-card fragment fade-up" data-fragment-index="1">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <h4>Gestión e Innovación</h4>
+                                    <ul>
+                                        <li>Gestión sistemática de riesgos.</li>
+                                        <li>Integra: Zero Trust, IA y automatización.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="img-container fragment zoom-in">
+                                <!-- Imagen 1 -->
+                                <img src="assets/img1.jpeg" alt="Global Security Concept" style="border-color: var(--neon-1);">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 3: VALOR DE LA INFORMACIÓN -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">2. Valor de la Información y Transformación Digital</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-gem"></i>
+                                <h4>El Activo Más Valioso</h4>
+                                <p>La información se ha consolidado como el activo fundamental para operar y tomar decisiones en las organizaciones contemporáneas.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="1">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <h4>Expansión del Riesgo</h4>
+                                <p>La migración masiva a la nube, el trabajo remoto y la IA han expandido exponencialmente la superficie de ataque.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="2">
+                                <i class="fa-solid fa-skull-crossbones"></i>
+                                <h4>Amenaza Financiera</h4>
+                                <p>Riesgos como ransomware y espionaje elevarán el costo global del cibercrimen a <strong>10,5 billones de dólares</strong> anuales para 2025.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 4: PROBLEMÁTICA ORGANIZACIONAL -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">3. El Reto en Ciberseguridad</h2>
+                        <div class="grid-2">
+                            <div style="text-align: left;">
+                                <h3 class="fragment fade-right highlight">Paradoja Estructural</h3>
+                                <p class="fragment fade-right">La velocidad de adopción tecnológica supera la madurez de las prácticas de seguridad, generando vulnerabilidades sistémicas.</p>
+                                <h3 class="fragment fade-right highlight" style="margin-top: 30px;">Requisito de Supervivencia</h3>
+                                <p class="fragment fade-right">La adopción de estándares internacionales deja de ser opcional y se convierte en un requisito de supervivencia operativa y competitiva.</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="info-card fragment fade-up">
+                                    <i class="fa-solid fa-user-xmark"></i>
+                                    <h4>Retos Críticos</h4>
+                                    <p>Ausencia de marcos normativos, escasez de talento especializado y resistencia cultural al cambio.</p>
+                                </div>
+                                <div class="info-card fragment fade-up" data-fragment-index="1">
+                                    <i class="fa-solid fa-network-wired"></i>
+                                    <h4>Complejidad</h4>
+                                    <p>Alta complejidad en la gestión de ecosistemas tecnológicos legados, nube y dispositivos IoT.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 5: ¿QUÉ ES ISO 27002? -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">4. ¿Qué es la Norma ISO/IEC 27002?</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment flip-up">
+                                <i class="fa-solid fa-lightbulb"></i>
+                                <h4>Guía de Mejores Prácticas</h4>
+                                <p>Establece directrices y principios. A diferencia de ISO 27001, funciona como una guía, no define requisitos certificables.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="1">
+                                <i class="fa-solid fa-list-check"></i>
+                                <h4>Menú Estructurado</h4>
+                                <p>Proporciona un menú del cual cada organización selecciona y adapta los controles que mejor respondan a su perfil de riesgo.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="2">
+                                <i class="fa-solid fa-code"></i>
+                                <h4>Agnóstico y Estratégico</h4>
+                                <p>Agnóstico respecto a tecnologías. Actúa como un mecanismo de gobernanza que alinea riesgos con objetivos del negocio.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 6: DUALIDAD ISO 27001 Y 27002 -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">5. Dualidad y Complementariedad</h2>
+                        <div class="grid-2">
+                            <div class="info-card fragment fade-right" style="border-top-color: #00e676;">
+                                <i class="fa-solid fa-certificate" style="color: #00e676;"></i>
+                                <h4 style="color: #00e676;">ISO/IEC 27001: El "QUÉ"</h4>
+                                <p>Define los requisitos obligatorios para establecer, implementar y mantener un SGSI (Sistema de Gestión de la Seguridad de la Información).</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-book" style="color: var(--neon-1);"></i>
+                                <h4 class="highlight">ISO/IEC 27002: El "CÓMO"</h4>
+                                <p>Proporciona la guía exhaustiva para la implementación táctica de los controles seleccionados. Es el presupuesto operativo del SGSI.</p>
+                            </div>
+                        </div>
+                        <p class="fragment fade-up" style="margin-top: 30px; font-weight: bold; text-align: center;">La relación entre ambas es de una complementariedad estructural fundamental.</p>
+                    </div>
+                </section>
+
+                <!-- DIAPOSITIVA 7: IMPORTANCIA ESTRATÉGICA -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">6. Importancia Estratégica del Análisis</h2>
+                        <div class="grid-2" style="align-items: center;">
+                            <div style="text-align: left;">
+                                <ul class="custom-list">
+                                    <li class="fragment fade-right"><i class="fa-solid fa-arrow-right"></i> La actualización 2022 representa el cambio conceptual y estructural más radical en la historia del estándar.</li>
+                                    <li class="fragment fade-right"><i class="fa-solid fa-arrow-right"></i> Las organizaciones requieren comprender estas implicaciones para realizar una transición exitosa.</li>
+                                </ul>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="info-card fragment zoom-in">
+                                    <i class="fa-solid fa-building-columns"></i>
+                                    <h4>Cumplimiento Local</h4>
+                                    <p>En Perú, entidades como la SBS toman como referencia sus principios para normativas de ciberseguridad.</p>
+                                </div>
+                                <div class="info-card fragment zoom-in" data-fragment-index="1">
+                                    <i class="fa-solid fa-user-tie"></i>
+                                    <h4>Valor Profesional</h4>
+                                    <p>Su comprensión es esencial para los profesionales de TI que operan en mercados exigentes y sectores regulados.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==========================================
+                 PARTE 2: CAPÍTULOS I Y II
+                 (Se detectará por la clase theme-2)
+            =========================================== -->
+            <section class="theme-container theme-2">
+                
+                <!-- CAPÍTULO I - SLIDE 1: ORÍGENES -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">7. Orígenes y Antecedentes Históricos</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-file-contract"></i>
+                                <h4>Finales de los 80s</h4>
+                                <p>El Departamento de Comercio e Industria (DTI) del Reino Unido publicó un primer <strong>Código de Prácticas</strong> orientativo.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="1">
+                                <i class="fa-solid fa-gas-pump"></i>
+                                <h4>Principios de los 90s</h4>
+                                <p>La corporación <strong>Shell International</strong> desarrolló un marco interno de políticas de seguridad que luego donó al DTI británico.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="2">
+                                <i class="fa-solid fa-stamp"></i>
+                                <h4>1995: Nace BS 7799</h4>
+                                <p>Publicación formal por el BSI. Estableció un modelo dual:<br><strong>Parte 1:</strong> Guía de prácticas.<br><strong>Parte 2:</strong> Requisitos certificables (SGSI).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO I - SLIDE 2: FAMILIA ISO -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 10px;">8. Adopción Internacional y Familia ISO</h2>
+                        <div class="img-container fragment fade-down" style="margin-bottom: 15px;">
+                            <!-- Imagen 2 -->
+                            <img src="assets/img2.jpeg" alt="Cybersecurity Concept" style="max-height: 180px; border-color: var(--neon-2);">
+                        </div>
+                        <div class="grid-3">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-globe"></i>
+                                <h4>Año 2000</h4>
+                                <p>ISO adoptó la BS 7799 Parte 1 como el estándar internacional <strong>ISO/IEC 17799:2000</strong>.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="1">
+                                <i class="fa-solid fa-certificate"></i>
+                                <h4>Año 2005</h4>
+                                <p>Se publicaron actualizaciones y nació formalmente la <strong>ISO/IEC 27001</strong> (certificación).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="2">
+                                <i class="fa-solid fa-sitemap"></i>
+                                <h4>Año 2007</h4>
+                                <p>Renombrada a <strong>ISO/IEC 27002</strong> consolidando la familia bajo el prefijo "27000".</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO I - SLIDE 3: EVOLUCIÓN VERSIONES -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">9. Evolución de las Versiones</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment flip-up">
+                                <i class="fa-solid fa-network-wired"></i>
+                                <h4>Versión 2005</h4>
+                                <p>Contenía <strong>133 controles</strong> (11 dominios).<br>Filosofía enfocada en la seguridad física y perimetral de las redes (LAN/WAN).</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="1">
+                                <i class="fa-solid fa-mobile-screen"></i>
+                                <h4>Versión 2013</h4>
+                                <p>Reducida a <strong>114 controles</strong> (14 dominios).<br>Fuerte enfoque en la gestión de riesgos, el teletrabajo y dispositivos móviles.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="2" style="border-top-color: var(--neon-2);">
+                                <i class="fa-solid fa-cloud-shield" style="color: var(--neon-2);"></i>
+                                <h4 class="highlight">Versión 2022</h4>
+                                <p>Consolidada en <strong>93 controles</strong> (4 macro-temas).<br>Cambio de paradigma hacia la ciberseguridad proactiva, privacidad y nube.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO II - SLIDE 1: MOTIVOS ACTUALIZACIÓN -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">10. Motivos de la Actualización 2022</h2>
+                        <div class="grid-2">
+                            <div style="text-align: left;">
+                                <h3 class="fragment fade-right highlight">Obsolescencia Tecnológica</h3>
+                                <p class="fragment fade-right">La versión 2013 no contemplaba realidades como el <strong>cloud computing masivo</strong>, arquitecturas <strong>DevSecOps</strong> y el trabajo remoto global.</p>
+                                
+                                <h3 class="fragment fade-right highlight" style="margin-top: 30px;">Enfoque Granular</h3>
+                                <p class="fragment fade-right">La norma ahora obliga a articular el "propósito" exacto de cada control frente al riesgo específico que mitiga.</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="info-card fragment fade-up">
+                                    <i class="fa-solid fa-virus"></i>
+                                    <h4>Nuevas Amenazas</h4>
+                                    <p>Cambios radicales: ransomware de doble extorsión y ataques a cadenas de suministro.</p>
+                                </div>
+                                <div class="info-card fragment fade-up" data-fragment-index="1">
+                                    <i class="fa-solid fa-scale-balanced"></i>
+                                    <h4>Privacidad (GDPR)</h4>
+                                    <p>Las regulaciones estrictas hicieron indispensable integrar mecanismos de protección de datos personales.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO II - SLIDE 2: MODELO ATRIBUTOS -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">11. La Gran Innovación: Modelo de Atributos</h2>
+                        <p class="fragment fade-in" style="margin-bottom: 25px; text-align: center;">Introducción de un sistema de etiquetado (hashtags) para clasificar controles desde múltiples perspectivas simultáneas.</p>
+                        <div class="grid-3" style="font-size: 0.9em;">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-tags"></i>
+                                <h4>Tipos de Control</h4>
+                                <p>Preventivo, Detectivo o Correctivo.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-lock"></i>
+                                <h4>Propiedades CIA</h4>
+                                <p>Confidencialidad, Integridad y Disponibilidad.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-shield-halved"></i>
+                                <h4>Alineación NIST</h4>
+                                <p>Identificar, Proteger, Detectar, Responder y Recuperar.</p>
+                            </div>
+                        </div>
+                        <div class="grid-2" style="font-size: 0.9em; margin-top: 20px;">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-gears"></i>
+                                <h4>Capacidades Operacionales</h4>
+                                <p>Gobernanza, Gestión de Activos, Seguridad de Redes, etc.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <h4>Dominios de Seguridad</h4>
+                                <p>Gobernanza y Ecosistema, Protección, Defensa y Resiliencia.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO II - SLIDE 3: ARQUITECTURA -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 10px;">12. Arquitectura de los 4 Macro-temas</h2>
+                        <div class="img-container fragment fade-down" style="margin-bottom: 15px;">
+                            <img src="assets/img4.jpeg" alt="4 Pilares ISO 27002" style="max-height: 120px; border-color: var(--neon-2);">
+                        </div>
+                        <div class="grid-2">
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-building" style="color: var(--neon-2);"></i>
+                                <h4 class="highlight">Organizacionales (Cláusula 5)</h4>
+                                <p><strong>37 controles.</strong> Pilar directivo. Diseño de políticas, gestión de proveedores, inteligencia de amenazas y cloud.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-users"></i>
+                                <h4>Personas (Cláusula 6)</h4>
+                                <p><strong>8 controles.</strong> Abarca el ciclo de vida del empleado, desde antecedentes hasta el teletrabajo y concienciación.</p>
+                            </div>
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-building-shield"></i>
+                                <h4>Físicos (Cláusula 7)</h4>
+                                <p><strong>14 controles.</strong> Protección tangible de infraestructura, datacenters, accesos e incidentes ambientales.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-microchip" style="color: var(--neon-2);"></i>
+                                <h4 class="highlight">Tecnológicos (Cláusula 8)</h4>
+                                <p><strong>34 controles.</strong> El núcleo técnico. Accesos, redes, protección de endpoints, criptografía y codificación segura.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO II - SLIDE 4: CONTROLES MODERNOS -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 20px;">13. Controles Estratégicos Nuevos</h2>
+                        <div class="img-container fragment fade-down" style="margin-bottom: 15px;">
+                            <img src="assets/img6.jpeg" alt="Controles Modernos" style="max-height: 100px; border-color: var(--neon-1);">
+                        </div>
+                        <p class="fragment fade-in" style="margin-bottom: 25px; text-align: center;">La versión 2022 introdujo <strong>11 controles completamente nuevos</strong> destacando:</p>
+                        <div class="grid-3" style="font-size: 0.85em; gap: 15px;">
+                            <div class="info-card fragment zoom-in" style="padding: 10px 12px;">
+                                <i class="fa-solid fa-radar" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1em;">Inteligencia Amenazas</h4>
+                                <p>Seguridad reactiva a predictiva analizando tácticas (5.7).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" style="padding: 10px 12px;">
+                                <i class="fa-solid fa-cloud-bolt" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1em;">Seguridad Cloud</h4>
+                                <p>Modelo de responsabilidad compartida con proveedores (5.23).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" style="padding: 10px 12px;">
+                                <i class="fa-solid fa-user-secret" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1em;">DLP & Enmascaramiento</h4>
+                                <p>Evitar fuga (8.12) y seudonimizar PII (8.11).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" style="padding: 10px 12px;">
+                                <i class="fa-solid fa-laptop-code" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1em;">Codificación Segura</h4>
+                                <p>Integra DevSecOps directo al ciclo de software (8.28).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" style="padding: 10px 12px;">
+                                <i class="fa-solid fa-desktop" style="font-size: 1.5em; margin-bottom: 10px;"></i>
+                                <h4 style="font-size: 1em;">Actividades de Monitoreo</h4>
+                                <p>Vigilancia técnica vital para SOC y despliegues SIEM (8.16).</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" style="padding: 20px 15px; border-color: var(--neon-2); background: rgba(0, 230, 118, 0.1);">
+                                <i class="fa-solid fa-arrow-trend-up" style="font-size: 1.5em; margin-bottom: 10px; color: var(--neon-2);"></i>
+                                <h4 style="font-size: 1em; color: var(--neon-2);">Innovación 2022</h4>
+                                <p>Modernización completa frente a amenazas del siglo XXI.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ==========================================
+                 PARTE 3: CAPÍTULOS III Y IV
+                 (Se detectará por la clase theme-3)
+            =========================================== -->
+            <section class="theme-container theme-3">
+                
+                <!-- TEMA 1: ECOSISTEMA ISO -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 10px;">14. El Ecosistema de la Familia ISO 27000</h2>
+                        <div class="img-container fragment fade-in" style="margin-bottom: 15px;">
+                            <img src="assets/img5.jpeg" alt="Ecosistema ISO 27000" style="max-height: 140px; border-color: var(--neon-3);">
+                        </div>
+                        <div class="grid-4" style="font-size: 0.85em;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-book-bookmark"></i>
+                                <h4>ISO/IEC 27000<br>(Fundamentos)</h4>
+                                <p>Glosario oficial. Establece un vocabulario común esencial para evitar ambigüedades en los requisitos.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="1">
+                                <i class="fa-solid fa-certificate"></i>
+                                <h4>ISO/IEC 27001<br>(Requisitos)</h4>
+                                <p>Estándar certificable que establece los requisitos formales del Sistema de Gestión (SGSI).</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="2">
+                                <i class="fa-solid fa-chart-pie"></i>
+                                <h4>ISO/IEC 27005<br>(Gestión Riesgos)</h4>
+                                <p>Metodología para tratar riesgos, determinando qué controles de ISO 27002 son relevantes.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="3">
+                                <i class="fa-solid fa-shield-heart"></i>
+                                <h4>ISO 22301<br>(Continuidad)</h4>
+                                <p>Se integra estrechamente creando una resiliencia holística contra ataques como ransomware.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 2: RELACIÓN SIMBIÓTICA -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">15. Relación Simbiótica (27001 & 27002)</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-circle-question"></i>
+                                <h4>El "Qué" y el "Cómo"</h4>
+                                <p>ISO 27001 define los requisitos estructurales (el "qué"). ISO 27002 proporciona el manual de referencia técnica (el "cómo").</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="1">
+                                <i class="fa-solid fa-file-signature"></i>
+                                <h4>Declaración (SoA)</h4>
+                                <p>El documento puente. Justifica la inclusión o exclusión de cada control del Anexo A basados en el análisis de riesgos.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="2">
+                                <i class="fa-solid fa-magnifying-glass-chart"></i>
+                                <h4>La Certificación</h4>
+                                <p>Solo se certifica formalmente ISO 27001, pero la auditoría verifica la efectividad técnica basada en la guía ISO 27002.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 3: CONVERGENCIA GLOBAL -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">16. Convergencia con Marcos Globales</h2>
+                        <div class="grid-2">
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-building-shield"></i>
+                                <h4>NIST Cybersecurity Framework</h4>
+                                <p>NIST opera a nivel estratégico. ISO 27002 actúa como el manual operativo mapeado directamente a sus funciones.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-diagram-project"></i>
+                                <h4>COBIT 2019</h4>
+                                <p>COBIT da el marco de gobierno para alinear TI. ISO 27002 operacionaliza los dominios técnicos como APO13 y DSS05.</p>
+                            </div>
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-gears"></i>
+                                <h4>CIS Controls v8</h4>
+                                <p>Existe un mapeo bidireccional oficial entre las configuraciones tácticas del CIS y los controles tecnológicos de ISO 27002.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-scale-balanced"></i>
+                                <h4>GDPR (Privacidad)</h4>
+                                <p>Brinda el andamiaje técnico (enmascaramiento, eliminación de información) para demostrar el cumplimiento legal.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 4: CULTURA Y ORGANIZACIÓN -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">17. Impacto en Cultura y Organización</h2>
+                        <div class="grid-2">
+                            <div style="text-align: left;">
+                                <h3 class="fragment fade-right highlight">Más Allá de TI</h3>
+                                <p class="fragment fade-right">No es un proyecto exclusivo de TI, sino una transformación que afecta la cultura, valores y comportamientos organizacionales.</p>
+                                
+                                <h3 class="fragment fade-right highlight" style="margin-top: 30px;">Gestión del Cambio</h3>
+                                <p class="fragment fade-right">La falta de gestión genera controles de papel. El patrocinio ejecutivo visible es fundamental contra la resistencia.</p>
+                            </div>
+                            <div style="display: flex; flex-direction: column; gap: 15px;">
+                                <div class="info-card fragment fade-up">
+                                    <i class="fa-solid fa-people-group"></i>
+                                    <h4>Factor Humano</h4>
+                                    <p>Capacitación continua para que los empleados internalicen la seguridad como norma social (6.3).</p>
+                                </div>
+                                <div class="info-card fragment fade-up" data-fragment-index="1">
+                                    <i class="fa-solid fa-arrow-up-right-dots"></i>
+                                    <h4>Madurez Digital</h4>
+                                    <p>Permite pasar de procesos informales (Nivel 1) a una optimización continua (Nivel 5).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 5: MACROPROCESOS -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">18. Transformación de Macroprocesos TI</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment flip-up">
+                                <i class="fa-solid fa-pen-ruler"></i>
+                                <h4>Arquitectura Empresarial</h4>
+                                <p><strong>Seguridad desde el diseño.</strong> Los requisitos de seguridad deben evaluarse antes de comprometer recursos (5.8).</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="1">
+                                <i class="fa-solid fa-laptop-code"></i>
+                                <h4>Desarrollo (DevSecOps)</h4>
+                                <p>Codificación segura (8.28) y herramientas (SAST/DAST) evitan que el código llegue a producción sin escrutinio.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="2">
+                                <i class="fa-solid fa-wrench"></i>
+                                <h4>Operaciones y Mantenimiento</h4>
+                                <p>Exige procesos de gestión de vulnerabilidades para mitigar brechas con parches de forma oportuna (8.8).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 6: COSTOS Y RETOS -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">19. Ejecución, Costos y Retos</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-calendar-check"></i>
+                                <h4>Planificación Ágil</h4>
+                                <p>Inicia con un análisis de brecha para priorizar la inversión. Una implementación toma entre <strong>12 y 24 meses</strong>.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="1">
+                                <i class="fa-solid fa-money-bill-wave"></i>
+                                <h4>Inversión Económica</h4>
+                                <p>Para Pymes: de $15,000 a $50,000 USD.<br>En multinacionales puede superar el Millón de dólares.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="2">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <h4>Retos Principales</h4>
+                                <p><strong>Técnicos:</strong> Sistemas legacy y entornos multicloud.<br><strong>Humanos:</strong> Escasez global de talento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 7: ROI Y BENEFICIOS -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 15px;">20. Beneficios Corporativos y ROI</h2>
+                        <div class="grid-4" style="gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-shield-halved" style="color: var(--neon-2);"></i>
+                                <h4>Reducción de Riesgo</h4>
+                                <p>Las organizaciones con programas maduros sufren menos incidentes, y cuando ocurren, el impacto es mitigado rápidamente. Esta reducción es tan medible que las aseguradoras ofrecen primas más bajas.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="1">
+                                <i class="fa-solid fa-server" style="color: var(--neon-1);"></i>
+                                <h4>Continuidad</h4>
+                                <p>La redundancia (8.14) y la preparación TIC (5.30) crean una infraestructura altamente resiliente. Minimiza drásticamente el tiempo de recuperación (RTO) y pérdida de datos (RPO).</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="2">
+                                <i class="fa-solid fa-globe" style="color: var(--neon-3);"></i>
+                                <h4>Mercados</h4>
+                                <p>Poseer una certificación internacional es un poderoso diferenciador reputacional, a menudo un requisito obligatorio para acceder a nuevos mercados y licitaciones gubernamentales.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="3">
+                                <i class="fa-solid fa-chart-line" style="color: var(--neon-4);"></i>
+                                <h4>Eficiencia</h4>
+                                <p>Introduce disciplina operativa que optimiza recursos. Reducir incidentes y automatizar controles generan ahorros reales y sostenibles que compensan la inversión inicial.</p>
+                            </div>
+                        </div>
+</section>
+            </section>
+
+            <!-- ==========================================
+                 PARTE 4: CAPÍTULOS V Y VI
+                 (Se detectará por la clase theme-4)
+            =========================================== -->
+            <section class="theme-container theme-4">
+                
+                <!-- CAPÍTULO V - SLIDE 1: TIPOS DE ORG -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">21. Tipos de Organizaciones</h2>
+                        <div class="grid-2">
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <h4>Sector Público</h4>
+                                <p><strong>Desafíos:</strong> Sistemas legados, restricciones presupuestarias y alta visibilidad pública.<br><strong>Beneficio:</strong> Estandarización y demostración de responsabilidad ante ciudadanos.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-building"></i>
+                                <h4>Sector Privado</h4>
+                                <p><strong>Motivadores:</strong> Requisitos contractuales y presiones regulatorias.<br><strong>Éxito:</strong> El ROI depende de un enfoque basado en riesgos y patrocinio ejecutivo genuino.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO V - SLIDE 2: SECTORES CRÍTICOS -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">22. Aplicación en Sectores Críticos</h2>
+                        <div class="grid-4" style="font-size: 0.8em; gap: 10px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-building-columns"></i>
+                                <h4>Sector Financiero</h4>
+                                <p>Alto riesgo de fraude. Regulado por SBS. Prioriza: Threat Intel (5.7), DLP (8.12), Enmascaramiento y Criptografía.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="1">
+                                <i class="fa-solid fa-hospital"></i>
+                                <h4>Sector Salud</h4>
+                                <p>Gestiona datos médicos (PHI). Se apoya en ISO 27799 abarcando IoT médico, registros y telemedicina.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="2">
+                                <i class="fa-solid fa-satellite-dish"></i>
+                                <h4>Telecomunicaciones</h4>
+                                <p>Infraestructura crítica global. Controles clave: Seguridad física, segregación de redes y cadena de suministro.</p>
+                            </div>
+                            <div class="info-card fragment fade-up" data-fragment-index="3">
+                                <i class="fa-solid fa-cloud"></i>
+                                <h4>Cloud & Tech</h4>
+                                <p>Escala masiva. Aplica el control 5.23 para definir el modelo de responsabilidad compartida proveedor/cliente.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO V - SLIDE 3: LECCIONES APRENDIDAS -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">23. Lecciones Aprendidas</h2>
+                        <div class="grid-2">
+                            <div class="info-card fragment zoom-in">
+                                <i class="fa-solid fa-user-tie"></i>
+                                <h4>Patrocinio Ejecutivo</h4>
+                                <p>El compromiso visible de la alta dirección logra objetivos con mayor velocidad y profundidad.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="1">
+                                <i class="fa-solid fa-crosshairs"></i>
+                                <h4>Enfoque en Riesgos</h4>
+                                <p>Evaluación rigurosa antes de intentar implementar todos los controles del catálogo indiscriminadamente.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="2">
+                                <i class="fa-solid fa-stairs"></i>
+                                <h4>Estrategia Gradual</h4>
+                                <p>Es más efectivo comenzar con un alcance limitado y expandirlo, evitando transformaciones totales simultáneas.</p>
+                            </div>
+                            <div class="info-card fragment zoom-in" data-fragment-index="3">
+                                <i class="fa-solid fa-users-gear"></i>
+                                <h4>Factor Humano</h4>
+                                <p>La formación del personal tiene la misma importancia estratégica que los controles técnicos.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO VI - SLIDE 4: PANORAMA AMENAZAS -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">24. Panorama Moderno de Amenazas</h2>
+                        <div class="grid-3">
+                            <div class="info-card fragment flip-up">
+                                <i class="fa-solid fa-store"></i>
+                                <h4>Cibercrimen as a Service</h4>
+                                <p>Profesionalización del delito (Ransomware/Phishing as a Service) democratizando capacidades ofensivas.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="1">
+                                <i class="fa-solid fa-user-ninja"></i>
+                                <h4>Doble Extorsión</h4>
+                                <p>Robo y cifrado simultáneo exigen estrategias de prevención de exfiltración (DLP) y respuesta rápida.</p>
+                            </div>
+                            <div class="info-card fragment flip-up" data-fragment-index="2">
+                                <i class="fa-solid fa-link-slash"></i>
+                                <h4>Cadena de Suministro</h4>
+                                <p>Ataques tipo SolarWinds demuestran que un solo componente vulnerado compromete a miles de organizaciones.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO VI - SLIDE 5: FACTOR HUMANO -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">25. Factor Humano y Cultura</h2>
+                        <div class="grid-2">
+                            <div style="text-align: left;">
+                                <h3 class="fragment fade-right highlight">Ingeniería Social</h3>
+                                <p class="fragment fade-right">Vector primario (phishing, vishing). Ningún control compensa un empleado sin capacitación adecuada.</p>
+                                
+                                <h3 class="fragment fade-right highlight" style="margin-top: 30px;">Cultura Madura</h3>
+                                <p class="fragment fade-right">El objetivo es que los empleados cuestionen anomalías y protejan la información instintivamente.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-gamepad"></i>
+                                <h4>Capacitación Continua</h4>
+                                <p>Pasar de formaciones anuales a programas con simulaciones, micro-aprendizaje y gamificación.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CAPÍTULO VI - SLIDE 6: TENDENCIAS TECNOLÓGICAS -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">26. Tendencias Disruptivas</h2>
+                        <div class="grid-4" style="gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-brain" style="color: var(--neon-5);"></i>
+                                <h4>Inteligencia Artificial</h4>
+                                <p>La IA es una espada de doble filo: facilita deepfakes/phishing, pero en defensa permite análisis UEBA en tiempo real para detectar anomalías. Su gobernanza se integra con ISO 42001.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-fingerprint" style="color: var(--neon-2);"></i>
+                                <h4>Zero Trust</h4>
+                                <p>Elimina el perímetro seguro bajo la premisa "nunca confiar, siempre verificar". Su aplicación depende de controles de ISO 27002 como microsegmentación (8.22), monitoreo (8.16) y MFA.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-robot" style="color: var(--neon-1);"></i>
+                                <h4>Automatización</h4>
+                                <p>Frente al déficit de profesionales, la intervención manual no basta. Las plataformas SOAR automatizan flujos de respuesta y parches, reduciendo la ventana de reacción de horas a minutos.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-cloud" style="color: var(--neon-3);"></i>
+                                <h4>Entornos Híbridos</h4>
+                                <p>La combinación de nubes, infraestructura local y trabajo remoto exige aplicar políticas uniformemente. Requiere identidad federada (SSO) y monitoreo unificado (8.16) sin importar dónde residan los datos.</p>
+                            </div>
+                        </div>
+</section>
+
+                <!-- CAPÍTULO VI - SLIDE 7: FUTURO ISO -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">27. El Futuro y la Gobernanza</h2>
+                        <div class="grid-3" style="gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-microchip" style="color: var(--neon-4);"></i>
+                                <h4>Computación Cuántica</h4>
+                                <p>Cuando los ordenadores cuánticos maduren, el cifrado asimétrico (como RSA) dejará de ser seguro. Los controles de criptografía (8.24) evolucionarán hacia estándares post-cuánticos del NIST.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-industry" style="color: var(--neon-2);"></i>
+                                <h4>IoT y OT</h4>
+                                <p>La convergencia de TI con ICS/SCADA y el IoT presenta retos. Estos dispositivos tienen limitaciones que impiden instalar agentes de seguridad tradicionales, exigiendo una evolución normativa especializada.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-sitemap" style="color: var(--neon-1);"></i>
+                                <h4>SGSI Ampliado</h4>
+                                <p>El futuro del gobierno digital requiere abandonar silos. La tendencia es migrar hacia un sistema unificado que articule la ciberseguridad, privacidad, ética de IA y resiliencia operacional.</p>
+                            </div>
+                        </div>
+</section>
+            </section>
+
+            <!-- ==========================================
+                 PARTE 5: CONCLUSIONES Y ANEXOS
+                 (Se detectará por la clase theme-5)
+            =========================================== -->
+            <section class="theme-container theme-5">
+                
+                <!-- CONCLUSIONES 1 -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">28. Naturaleza y Arquitectura</h2>
+                        <div class="grid-2">
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-globe"></i>
+                                <h4>Reconocimiento Global</h4>
+                                <p>Es el catálogo más completo y utilizado mundialmente. El lenguaje común de la seguridad aplicable a cualquier organización.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-timeline"></i>
+                                <h4>Evolución Histórica</h4>
+                                <p>Desde BS 7799 hasta 2022 refleja una maduración progresiva que responde a la transformación tecnológica.</p>
+                            </div>
+                            <div class="info-card fragment fade-right">
+                                <i class="fa-solid fa-microchip"></i>
+                                <h4>Sofisticación Conceptual</h4>
+                                <p>La versión 2022 representa el mayor nivel de sofisticación, destacando su modelo de atributos multidimensional.</p>
+                            </div>
+                            <div class="info-card fragment fade-left">
+                                <i class="fa-solid fa-layer-group"></i>
+                                <h4>Estructura Integral</h4>
+                                <p>4 macro-temas y 93 controles cubren todas las dimensiones (organizacional, humana, física y técnica).</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- CONCLUSIONES 2 -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 10px;">29. Integración, Gestión e Impacto</h2>
+                        <div class="grid-4" style="gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-scale-balanced" style="color: var(--neon-1);"></i>
+                                <h4>Riesgos & 27001</h4>
+                                <p>La gestión de riesgos (ISO 27005) justifica técnica y económicamente qué controles se activan. ISO 27001 dicta el "qué" debe lograr el sistema, mientras ISO 27002 proporciona el "cómo".</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-circle-nodes" style="color: var(--neon-2);"></i>
+                                <h4>Interoperabilidad</h4>
+                                <p>ISO 27002 es la capa operativa que conecta requisitos: articula la visión del NIST CSF, las directrices de COBIT, las mitigaciones de CIS Controls y las obligaciones del GDPR.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-arrow-trend-up" style="color: var(--neon-3);"></i>
+                                <h4>Impacto y ROI</h4>
+                                <p>Implementar la norma transforma la cultura organizacional y la gestión tecnológica. El ROI se visualiza al recortar drásticamente los altos costos de respuesta y daño ante ciberataques.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-arrows-spin" style="color: var(--neon-4);"></i>
+                                <h4>Flexibilidad Futura</h4>
+                                <p>Basarse en principios técnicos neutrales y un sistema de atributos multidimensional asegura que la versión 2022 no se vuelva obsoleta ante innovaciones como IA o Zero Trust.</p>
+                            </div>
+                        </div>
+</section>
+
+                <!-- RECOMENDACIONES ESTRATÉGICAS -->
+                <section data-auto-animate data-transition="zoom">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">30. Acciones por Rol</h2>
+                        <div class="grid-4" style="gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-user-tie" style="color: var(--neon-5);"></i>
+                                <h4>Alta Dirección</h4>
+                                <p>Responsabilidad indelegable de posicionar la ciberseguridad como riesgo estratégico. Deben proveer un patrocinio visible para vencer resistencia cultural y garantizar un presupuesto alineado matemáticamente.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-user-shield" style="color: var(--neon-1);"></i>
+                                <h4>Líderes CISO</h4>
+                                <p>Abandonar auditorías en hojas de cálculo y explotar el modelo de atributos para generar vistas dinámicas. Prioridad: implantar controles modernos (Threat Intelligence, Cloud, DLP).</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-users-gear" style="color: var(--neon-2);"></i>
+                                <h4>Equipos Implementación</h4>
+                                <p>Iniciar proyectos con análisis de brecha (gap analysis) honesto. El enfoque no es añadir software, sino integrar la seguridad inherentemente en cada ciclo de desarrollo (security by design).</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-graduation-cap" style="color: var(--neon-3);"></i>
+                                <h4>Ámbito Académico</h4>
+                                <p>Proveer métricas fiables sobre la eficacia de cada control. Definir impactos normativos de la inteligencia artificial generativa, el edge computing y futuras tecnologías cuánticas.</p>
+                            </div>
+                        </div>
+</section>
+
+                <!-- ANEXOS: COMPARATIVA Y NUEVOS CONTROLES -->
+                <section data-auto-animate data-transition="slide">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">31. Evolución y Controles</h2>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-timeline" style="color: var(--neon-4); font-size: 28px !important; margin-bottom: 5px !important;"></i>
+                                <h4 style="color: var(--neon-4);">Anexo A (Comparativa Histórica)</h4>
+                                <p>La estructura se ha simplificado y optimizado lógicamente; pasó de tener 133 controles divididos en 11 dominios en 2005, a 114 controles en 14 cláusulas en 2013. Finalmente, en 2022, se consolidó en 93 controles agrupados en solo 4 macro-temas (organizacionales, personas, físicos y tecnológicos), dotados ahora de 5 dimensiones de atributos para filtrado dinámico.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-plus" style="color: var(--neon-1); font-size: 28px !important; margin-bottom: 5px !important;"></i>
+                                <h4 style="color: var(--neon-1);">Anexo B (11 Controles Nuevos de 2022)</h4>
+                                <p>Responden directamente a las vulnerabilidades modernas descubiertas en la última década. Incluyen: Inteligencia de Amenazas (5.7), Seguridad Cloud (5.23), Continuidad TIC (5.30), Monitoreo Físico Inteligente (7.4), Gestión de la Configuración (8.9), Eliminación de Información (8.10), Enmascaramiento de Datos (8.11), DLP para fuga de datos (8.12), Actividades de Monitoreo continuo (8.16), Filtrado Web (8.23) y Codificación Segura (8.28).</p>
+                            </div>
+                        </div>
+</section>
+
+                <!-- ANEXOS: CASOS Y MAPEO -->
+                <section data-auto-animate data-transition="convex">
+                    <div class="glass-panel">
+                        
+                        <h2 style="font-size: 2em; margin-bottom: 30px;">32. Casos Prácticos y Mapeo</h2>
+                        <div style="display: flex; flex-direction: column; gap: 15px;">
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-briefcase" style="color: var(--neon-2); font-size: 28px !important; margin-bottom: 5px !important;"></i>
+                                <h4 style="color: var(--neon-2);">Anexo C (Casos Empresariales)</h4>
+                                <p>Las métricas de casos reales avalan la norma. Una empresa de manufactura documentó una reducción del 18% en defectos de producción al asegurar sus redes OT. Un sistema de salud logró prevenir 340 eventos médicos adversos anuales al asegurar su disponibilidad de datos. Un retailer B2C aumentó un 15% sus ingresos simplemente capitalizando la confianza de sus clientes tras la certificación.</p>
+                            </div>
+                            <div class="info-card fragment fade-up">
+                                <i class="fa-solid fa-table" style="color: var(--neon-3); font-size: 28px !important; margin-bottom: 5px !important;"></i>
+                                <h4 style="color: var(--neon-3);">Anexo D (Matriz Comparativa de Implementación)</h4>
+                                <p>El control 5.7 (Inteligencia de Amenazas) cumple directamente con la función Identify del NIST CSF, el objetivo APO12 de COBIT y el Artículo 32 del GDPR. El control de Gestión de Incidentes (5.24) homologa con Respond del NIST y DSS05 de COBIT. El enmascaramiento de datos y el monitoreo atienden las obligaciones críticas de privacidad (Protect y Detect) exigidas globalmente.</p>
+                            </div>
+                        </div>
+</section>
+
+                <!-- CIERRE -->
+                <section data-transition="fade">
+                    <div style="text-align: center;">
+                        <h1 class="animate__animated animate__pulse animate__infinite" style="font-size: 4em; text-shadow: 0 0 30px rgba(255, 23, 68, 0.8);">¡GRACIAS!</h1>
+                        <p style="letter-spacing: 5px; color: #aaa;">FIN DE LA PRESENTACIÓN</p>
+                    </div>
+                </section>
+            </section>
+
+        </div>
+    </div>
+
+    <!-- Scripts de Librerías (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+    <!-- Particles.js para el fondo interactivo -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+    <!-- Vanilla Tilt para efectos 3D en las tarjetas -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.0/vanilla-tilt.min.js"></script>
+
+    <script>
+        // 1. Inicializar Reveal.js
+        Reveal.initialize({
+            hash: true,
+            transition: 'slide', 
+            controls: true,
+            progress: true,
+            center: true,
+            touch: true,
+            slideNumber: 'c/t',
+            width: 1200, // Fuerza un lienzo más grande para escalar mejor el contenido hacia abajo
+            height: 800, // Altura base mayor para evitar que corte partes en pantallas pequeñas
+            margin: 0.05, // Margen responsivo
+            minScale: 0.2,
+            maxScale: 1.5
+        });
+
+        // 2. Configurar Partículas Interactivas del Fondo
+        particlesJS("particles-js", {
+            "particles": {
+                "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+                "color": { "value": "#ffffff" },
+                "shape": { "type": "circle" },
+                "opacity": { "value": 0.3, "random": true },
+                "size": { "value": 3, "random": true },
+                "line_linked": { 
+                    "enable": true, 
+                    "distance": 150, 
+                    "color": "#ffffff", 
+                    "opacity": 0.2, 
+                    "width": 1 
+                },
+                "move": { 
+                    "enable": true, 
+                    "speed": 2, 
+                    "direction": "none", 
+                    "random": false, 
+                    "straight": false, 
+                    "out_mode": "out", 
+                    "bounce": false 
+                }
+            },
+            "interactivity": {
+                "detect_on": "canvas",
+                "events": { 
+                    "onhover": { "enable": true, "mode": "grab" }, 
+                    "onclick": { "enable": true, "mode": "push" }, 
+                    "resize": true 
+                },
+                "modes": { 
+                    "grab": { "distance": 180, "line_linked": { "opacity": 0.6 } }, 
+                    "push": { "particles_nb": 4 } 
+                }
+            },
+            "retina_detect": true
+        });
+
+        // 3. Inicializar efectos 3D (Tilt) en las tarjetas que lo requieran
+        VanillaTilt.init(document.querySelectorAll("[data-tilt]"), {
+            max: 10,
+            speed: 400,
+            glare: true,
+            "max-glare": 0.1,
+            gyroscope: true
+        });
+
+        // 4. Lógica de Tematización Dinámica (Cambio de color del fondo de partículas)
+        const particlesContainer = document.getElementById('particles-js');
+        
+        Reveal.on('slidechanged', event => {
+            const currentSlide = event.currentSlide;
+            const parentSection = currentSlide.closest('.theme-container') || currentSlide;
+            
+            // Colores correspondientes a las variables CSS
+            if(parentSection.classList.contains('theme-1')) {
+                particlesContainer.style.backgroundColor = '#0A192F'; // Navy Blue
+            } else if(parentSection.classList.contains('theme-2')) {
+                particlesContainer.style.backgroundColor = '#0F3325'; // Forest Green
+            } else if(parentSection.classList.contains('theme-3')) {
+                particlesContainer.style.backgroundColor = '#2D1445'; // Royal Purple
+            } else if(parentSection.classList.contains('theme-4')) {
+                particlesContainer.style.backgroundColor = '#4A1C00'; // Burned Orange
+            } else if(parentSection.classList.contains('theme-5')) {
+                particlesContainer.style.backgroundColor = '#1C1C1C'; // Onyx Black
+            }
+        });
+
+        // Gatillar el evento una vez al inicio para establecer el color correcto
+        setTimeout(() => {
+            Reveal.dispatchEvent({ type: 'slidechanged', data: { currentSlide: Reveal.getCurrentSlide() } });
+        }, 100);
+
+    </script>
+</body>
+</html>
