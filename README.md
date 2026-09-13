@@ -1,5 +1,7 @@
 # 🔐 ISO/IEC 27002 — Presentación interactiva: Aplicación y Estrategia Corporativa
 
+![Portada de la presentación](docs/captura.png)
+
 Presentación web interactiva (construida con **Reveal.js**) sobre la norma **ISO/IEC 27002:2022**: qué es, cómo evolucionó, qué cambió en la versión 2022 y cómo se aplica estratégicamente en una organización.
 
 En lugar de diapositivas de PowerPoint, la exposición es una página web con animaciones, navegación por teclado y diseño propio (tema oscuro con acentos neón).
@@ -16,7 +18,7 @@ En lugar de diapositivas de PowerPoint, la exposición es una página web con an
 ## Cómo verla
 
 1. Descarga o clona el repositorio.
-2. Abre `presentacion_interactiva.html` en tu navegador.
+2. Abre `index.html` en tu navegador.
 3. Navega con las flechas del teclado (→ ←) o deslizando en pantalla táctil.
 
 > Nota: Reveal.js y las fuentes se cargan por CDN, así que necesitas conexión a internet para verla con todos los estilos.
